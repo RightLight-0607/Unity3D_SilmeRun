@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    // 방향 표시로 활용할 화살표의 점멸효과
     SpriteRenderer sr;
     Color alpha = new Color(0, 0, 0, 0.1f);
     bool isUpAlpha = false;

@@ -10,19 +10,19 @@ using Newtonsoft.Json;
 using Unity.VisualScripting;
 using System.Collections;
 
-#region ±¸Á¶Ã¼ ¹× Å¬·¡½º
+#region êµ¬ì¡°ì²´ ë° í´ë˜ìŠ¤
 /// <summary>
-/// ÇÃ·¹ÀÌ¾îÀÇ ±âº» Á¤º¸
+/// í”Œë ˆì´ì–´ì˜ ê¸°ë³¸ ì •ë³´
 /// </summary>
 public struct PlayerInfo
 {
-    public int characterIndex;    // Ä³¸¯ÅÍ Á¾·ù
-    public string name;         // ´Ğ³×ÀÓ
-    public float rapTime;       // ·¦Å¸ÀÓ
+    public int characterIndex;    // ìºë¦­í„° ì¢…ë¥˜
+    public string name;         // ë‹‰ë„¤ì„
+    public float rapTime;       // ë©íƒ€ì„
     public int course;
 }
 /// <summary>
-/// ÇÃ·¹ÀÌ¾îÀÇ ±â·Ï
+/// í”Œë ˆì´ì–´ì˜ ê¸°ë¡
 /// </summary>
 public class Record
 {
@@ -30,7 +30,7 @@ public class Record
     public float rapTime;
 }
 /// <summary>
-/// ±â·Ï Ç¥±â¸¦ À§ÇØ
+/// ê¸°ë¡ í‘œê¸°ë¥¼ ìœ„í•´
 /// </summary>
 [Serializable]
 public struct SoloRecordObject
@@ -40,7 +40,7 @@ public struct SoloRecordObject
     public GameObject rankingImage;
 }
 /// <summary>
-/// ¸ÖÆ¼¹æ ÀÔÀå½Ã ¶ç¿ö¾ß ÇÒ Á¤º¸
+/// ë©€í‹°ë°© ì…ì¥ì‹œ ë„ì›Œì•¼ í•  ì •ë³´
 /// </summary>
 [Serializable]
 public struct MultiInfoPos
@@ -54,21 +54,21 @@ public struct MultiInfoPos
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
-    #region º¯¼ö ¼±¾ğ
+    #region ë³€ìˆ˜ ì„ ì–¸
     public static GameManager instance;
     public bool isSolo;
 
-    [Header("·Î±×ÀÎ")]
+    [Header("ë¡œê·¸ì¸")]
     [SerializeField] InputField nameField;
     [SerializeField] GameObject nameErrorImage;
 
-    [Header("³»Á¤º¸")]
+    [Header("ë‚´ì •ë³´")]
     [SerializeField] GameObject playerInfo;
     [SerializeField] Image selectedCharacterImage;
     public TextMeshProUGUI nameText;
     public PlayerInfo me;
 
-    [Header("¸ÖÆ¼")]
+    [Header("ë©€í‹°")]
     [SerializeField]
     MultiInfoPos[] multiPos = new MultiInfoPos[2];
     [SerializeField] TextMeshProUGUI roomNameText;
@@ -77,12 +77,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     PlayerInfo[] playerList = new PlayerInfo[3];
     GameObject roomTemp;
 
-    [Header("±â·Ï / ·©Å©")]
+    [Header("ê¸°ë¡ / ë­í¬")]
     [SerializeField] SoloRecordObject[] soloRecordObject;
     [HideInInspector] public string[] COURSE_KEY = new string[3];
     public Record[] records = new Record[5];
 
-    [Header("Äµ¹ö½º Ã¢")]
+    [Header("ìº”ë²„ìŠ¤ ì°½")]
     [SerializeField] GameObject lobbyImage;
     [SerializeField] GameObject loginImage;
     [SerializeField] GameObject room;
@@ -96,22 +96,22 @@ public class GameManager : MonoBehaviourPunCallbacks
     [HideInInspector] public GameObject canvas;
     public GameObject lodingImage;
 
-    [Header("ÄÚ½º¼±ÅÃ")]
+    [Header("ì½”ìŠ¤ì„ íƒ")]
     [SerializeField] Image courseChoiceImage;
     [SerializeField] Image courseInfoImage;
     [SerializeField] Sprite[] courseImage = new Sprite[3];
     public Sprite[] characterImage = new Sprite[4];
 
-    [Header("Äµ¹ö½º ¹öÆ°")]
+    [Header("ìº”ë²„ìŠ¤ ë²„íŠ¼")]
     [SerializeField] GameObject roomButtonOrigin;
     [SerializeField] Button courseChoiceButton;
     [SerializeField] Button gameStartButton;
 
-    [Header("»ç¿îµå")]
+    [Header("ì‚¬ìš´ë“œ")]
     public AudioSource lobbyBGM;
     #endregion
 
-    #region ÀÌº¥Æ®ÇÔ¼ö
+    #region ì´ë²¤íŠ¸í•¨ìˆ˜
     private void Awake()
     {
         if (instance != null)
@@ -136,32 +136,32 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnConnectedToMaster()
     {
-        Debug.Log("¼­¹ö ¿¬°á");
+        Debug.Log("ì„œë²„ ì—°ê²°");
     }
     public override void OnJoinedLobby()
     {
-        Debug.Log("·Îºñ ¿¬°á");
+        Debug.Log("ë¡œë¹„ ì—°ê²°");
     }
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log($"·ë ¸®½ºÆ® ¾÷µ¥ÀÌÆ® ::::::: ÇöÀç ¹æ °¹¼ö : {roomList.Count}");
+        Debug.Log($"ë£¸ ë¦¬ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸ ::::::: í˜„ì¬ ë°© ê°¯ìˆ˜ : {roomList.Count}");
         myRoomList = roomList;
 
         RoomListUpdate();
     }
     public override void OnCreatedRoom()
     {
-        Debug.Log("¹æÀå Ãß°¡");
+        Debug.Log("ë°©ì¥ ì¶”ê°€");
         playerList[0] = me;
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        errorImage.GetComponentInChildren<TextMeshProUGUI>().text = "¹æ »ı¼ºÀÌ ºÒ°¡ÇÕ´Ï´Ù.";
+        errorImage.GetComponentInChildren<TextMeshProUGUI>().text = "ë°© ìƒì„±ì´ ë¶ˆê°€í•©ë‹ˆë‹¤.";
         errorImage.SetActive(true);
     }
     public override void OnJoinedRoom()
     {
-        Debug.Log("¹æ ¿¬°á");
+        Debug.Log("ë°© ì—°ê²°");
         isSolo = false;
         EnterRoom();
 
@@ -176,11 +176,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.Log("ÀÔÀå ½ÇÆĞ");
-        errorImage.GetComponentInChildren<TextMeshProUGUI>().text = "¹æ ÀÔÀåÀÌ ºÒ°¡ÇÕ´Ï´Ù.";
+        Debug.Log("ì…ì¥ ì‹¤íŒ¨");
+        errorImage.GetComponentInChildren<TextMeshProUGUI>().text = "ë°© ì…ì¥ì´ ë¶ˆê°€í•©ë‹ˆë‹¤.";
         errorImage.SetActive(true);
-        // ½ÇÆĞ È­¸éÀ» ¶ç¿öÁÖ´Â°Ô ´õ ÁÁÀ»µí
-        // ½ÇÆĞ½Ã ÀÔÀå¸ğ¼Ç(·ÎµùÈ­¸é) ¾È¶ßµµ·Ï
+        // ì‹¤íŒ¨ í™”ë©´ì„ ë„ì›Œì£¼ëŠ”ê²Œ ë” ì¢‹ì„ë“¯
+        // ì‹¤íŒ¨ì‹œ ì…ì¥ëª¨ì…˜(ë¡œë”©í™”ë©´) ì•ˆëœ¨ë„ë¡
     }
     public override void OnMasterClientSwitched(Photon.Realtime.Player p)
     {
@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public override void OnLeftRoom()
     {
-        // ³» ¸®½ºÆ® ÃÊ±âÈ­
+        // ë‚´ ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
         for (int i = 0; i < playerList.Length; i++)
         {
             playerList[i].name = null;
@@ -201,11 +201,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    #region ÇÔ¼ö
+    #region í•¨ìˆ˜
 
 
     /// <summary>
-    /// ÇØ»óµµ °íÁ¤
+    /// í•´ìƒë„ ê³ ì •
     /// </summary>
     void FixedResolution()
     {
@@ -216,7 +216,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ´Ğ³×ÀÓ ÀÔ·Â ÈÄ Á¢¼Ó ¹öÆ° ´©¸¦ ¶§ ½ÇÇà
+    /// ë‹‰ë„¤ì„ ì…ë ¥ í›„ ì ‘ì† ë²„íŠ¼ ëˆ„ë¥¼ ë•Œ ì‹¤í–‰
     /// </summary>
     public void OnClickLogin()
     {
@@ -243,9 +243,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ´Ğ³×ÀÓ Áßº¹ Ã¼Å©
-    /// PhotonNetwork.PlayerList´Â ·ë ¾È¿¡ ÇÃ·¹ÀÌ¾îµéÀÌ µé¾î°¡´Â ¹è¿­
-    /// ¼­¹ö¿¡ µé¾î°¡ÀÖ´Â ÇÃ·¹ÀÌ¾îµéÀÇ ´Ğ³×ÀÓÀ» ¾Ë±â¿¡´Â ¹«¸®°¡ ÀÖÀ½
+    /// ë‹‰ë„¤ì„ ì¤‘ë³µ ì²´í¬
+    /// PhotonNetwork.PlayerListëŠ” ë£¸ ì•ˆì— í”Œë ˆì´ì–´ë“¤ì´ ë“¤ì–´ê°€ëŠ” ë°°ì—´
+    /// ì„œë²„ì— ë“¤ì–´ê°€ìˆëŠ” í”Œë ˆì´ì–´ë“¤ì˜ ë‹‰ë„¤ì„ì„ ì•Œê¸°ì—ëŠ” ë¬´ë¦¬ê°€ ìˆìŒ
     /// </summary>
     /// <param name="nickname"></param>
     /// <returns></returns>
@@ -260,7 +260,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// °°ÀÌÇÏ±â ¹öÆ° Å¬¸¯ ½Ã
+    /// ê°™ì´í•˜ê¸° ë²„íŠ¼ í´ë¦­ ì‹œ
     /// </summary>
     public void OnMulti()
     {
@@ -277,9 +277,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         RoomListUpdate();
     }
     /// <summary>
-    /// ¹æ ¸ñ·Ï ¾÷µ¥ÀÌÆ®
-    /// ¾÷µ¥ÀÌÆ® ½Ã ±âÁ¸¿¡ ÀÖ´ø ¹æÀ» ÀüºÎ »èÁ¦ ÇÑ ÈÄ
-    /// ¹æ List¸¦ È®ÀÎÇØ¼­ »õ·Ó°Ô »ı¼º
+    /// ë°© ëª©ë¡ ì—…ë°ì´íŠ¸
+    /// ì—…ë°ì´íŠ¸ ì‹œ ê¸°ì¡´ì— ìˆë˜ ë°©ì„ ì „ë¶€ ì‚­ì œ í•œ í›„
+    /// ë°© Listë¥¼ í™•ì¸í•´ì„œ ìƒˆë¡­ê²Œ ìƒì„±
     /// </summary>
     public void RoomListUpdate()
     {
@@ -295,11 +295,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             roomTemp.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = myRoomList[i].Name;
             roomTemp.transform.Find("PersonnelText").GetComponent<TextMeshProUGUI>().text = myRoomList[i].PlayerCount + " / " + myRoomList[i].MaxPlayers;
         }
-        Debug.Log($"·ë ¸®½ºÆ® ¾÷µ¥ÀÌÆ® ::::::: ÇöÀç ¹æ °¹¼ö : {myRoomList.Count}");
+        Debug.Log($"ë£¸ ë¦¬ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸ ::::::: í˜„ì¬ ë°© ê°¯ìˆ˜ : {myRoomList.Count}");
     }
 
     /// <summary>
-    /// ¹æ »ı¼º½Ã
+    /// ë°© ìƒì„±ì‹œ
     /// </summary>
     public void CreatedRoom()
     {
@@ -312,14 +312,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ¸ÖÆ¼¿¡¼­ »õ·Î¿î ÇÃ·¹ÀÌ¾î ÀÔÀå ½Ã
-    /// ¹æÀåÀÌ playerList¿¡ Ãß°¡
+    /// ë©€í‹°ì—ì„œ ìƒˆë¡œìš´ í”Œë ˆì´ì–´ ì…ì¥ ì‹œ
+    /// ë°©ì¥ì´ playerListì— ì¶”ê°€
     /// </summary>
     /// <param name="info"></param>
     [PunRPC]
     void AddPlayerInfo(string info)
     {
-        // ¹æÀåÀÌ ÇÒ ÀÏ > ¸®½ºÆ®¿¡ Ãß°¡
+        // ë°©ì¥ì´ í•  ì¼ > ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
         PlayerInfo temp = JsonConvert.DeserializeObject<PlayerInfo>(info);
         for (int i = 0; i < playerList.Length; i++)
         {
@@ -334,8 +334,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ¸ÖÆ¼¿¡¼­ ±âÁ¸ÀÇ ÇÃ·¹ÀÌ¾î ¶°³¯ ½Ã
-    /// ¹æÀåÀÌ playerList¿¡¼­ »èÁ¦
+    /// ë©€í‹°ì—ì„œ ê¸°ì¡´ì˜ í”Œë ˆì´ì–´ ë– ë‚  ì‹œ
+    /// ë°©ì¥ì´ playerListì—ì„œ ì‚­ì œ
     /// </summary>
     /// <param name="info"></param>
     [PunRPC]
@@ -355,8 +355,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ¹æÀåÀÌ °»½ÅÇÑ playerList¸¦
-    /// Âü°¡ÀÚµé¿¡°Ô º¸³»´Â ÇÔ¼ö
+    /// ë°©ì¥ì´ ê°±ì‹ í•œ playerListë¥¼
+    /// ì°¸ê°€ìë“¤ì—ê²Œ ë³´ë‚´ëŠ” í•¨ìˆ˜
     /// </summary>
     /// <param name="jsonKey"></param>
     [PunRPC]
@@ -367,18 +367,18 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ¸ÖÆ¼¹æ¿¡¼­ ½Ã°¢ÀûÀ¸·Î ¹æ Á¤º¸ ¾÷µ¥ÀÌÆ®
-    /// ÇÃ·¹ÀÌ¾î ¸ñ·Ï ¹× ¸Ê Á¤º¸µµ Æ÷ÇÔ
+    /// ë©€í‹°ë°©ì—ì„œ ì‹œê°ì ìœ¼ë¡œ ë°© ì •ë³´ ì—…ë°ì´íŠ¸
+    /// í”Œë ˆì´ì–´ ëª©ë¡ ë° ë§µ ì •ë³´ë„ í¬í•¨
     /// </summary>
     /// <param name="playerList"></param>
     void MultiRoomInfoUpdate(PlayerInfo[] playerList)
     {
         int j = 0;
-        //// °»½ÅµÈ ¸®½ºÆ®¸¦ ÀÌ¿ëÇÏ¿© °¢ ÇÃ·¹ÀÌ¾î¸¦ ÇØ´ç À§Ä¡·Î ÀÌµ¿
+        //// ê°±ì‹ ëœ ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ìš©í•˜ì—¬ ê° í”Œë ˆì´ì–´ë¥¼ í•´ë‹¹ ìœ„ì¹˜ë¡œ ì´ë™
         for (int i = 0; i < playerList.Length; i++)
         {
-            // ³ª¸¦ Á¦¿ÜÇÑ ¼ø¼­´ë·Î À§Ä¡¿¡ »ğÀÔ
-            // ÀÌ¸§À¸·Î ºñ±³ÇÏ·Á¸é ÀÌ¸§ ¼³Á¤ ½Ã Áßº¹ÀÌ ¾ÈµÇ°Ô²û ÇØ¾ßÇÔ
+            // ë‚˜ë¥¼ ì œì™¸í•œ ìˆœì„œëŒ€ë¡œ ìœ„ì¹˜ì— ì‚½ì…
+            // ì´ë¦„ìœ¼ë¡œ ë¹„êµí•˜ë ¤ë©´ ì´ë¦„ ì„¤ì • ì‹œ ì¤‘ë³µì´ ì•ˆë˜ê²Œë” í•´ì•¼í•¨
             if (playerList[i].name == null)
             {
                 multiPos[j].nameText.text = "";
@@ -396,7 +396,7 @@ public class GameManager : MonoBehaviourPunCallbacks
    
 
     /// <summary>
-    /// È¥ÀÚÇÏ±â ¹öÆ° Å¬¸¯ ½Ã
+    /// í˜¼ìí•˜ê¸° ë²„íŠ¼ í´ë¦­ ì‹œ
     /// </summary>
     public void OnSoloRoom()
     {
@@ -405,7 +405,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ´ë±â¹æ¿¡¼­ °ÔÀÓ ½ÃÀÛ ¹öÆ° Å¬¸¯ ½Ã
+    /// ëŒ€ê¸°ë°©ì—ì„œ ê²Œì„ ì‹œì‘ ë²„íŠ¼ í´ë¦­ ì‹œ
     /// </summary>
     public void GameStartButton()
     {
@@ -434,16 +434,16 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     
     /// <summary>
-    /// ÄÚ½º ¼±ÅÃ ½Ã ½ÇÇàµÉ ÇÔ¼ö
-    /// È¥ÀÚÇÏ±â / °°ÀÌÇÏ±â ¸ğµÎ »ç¿ë
+    /// ì½”ìŠ¤ ì„ íƒ ì‹œ ì‹¤í–‰ë  í•¨ìˆ˜
+    /// í˜¼ìí•˜ê¸° / ê°™ì´í•˜ê¸° ëª¨ë‘ ì‚¬ìš©
     /// </summary>
     /// <param name="index"></param>
     public void CourseChoice(int index)
     {
         me.course = index;
         courseChoiceImage.sprite = courseImage[index];
-        // ÀÌ¹ÌÁö ¹Ù²Ù±â (¸ÖÆ¼¿¡¼­´Â Âü°¡ÀÚµé¿¡°Ôµµ ¸ÊÀÌ ¹Ù²î¾ú´Ù´Â°É ¾Ë·ÁÁà¾ßÇÔ)
-        // PunRPC·Î º¸³»¾ß ÇÒ Á¤º¸
+        // ì´ë¯¸ì§€ ë°”ê¾¸ê¸° (ë©€í‹°ì—ì„œëŠ” ì°¸ê°€ìë“¤ì—ê²Œë„ ë§µì´ ë°”ë€Œì—ˆë‹¤ëŠ”ê±¸ ì•Œë ¤ì¤˜ì•¼í•¨)
+        // PunRPCë¡œ ë³´ë‚´ì•¼ í•  ì •ë³´
         if (isSolo)
             RecordUpdate(index);
         else if (!isSolo)
@@ -465,7 +465,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ÄÚ½º¼±ÅÃ½Ã ¸¶¿ì½º ¿Ã·ÈÀ» ¶§ ÀÌ¹ÌÁö º¯°æÇÒ ÇÔ¼ö
+    /// ì½”ìŠ¤ì„ íƒì‹œ ë§ˆìš°ìŠ¤ ì˜¬ë ¸ì„ ë•Œ ì´ë¯¸ì§€ ë³€ê²½í•  í•¨ìˆ˜
     /// </summary>
     /// <param name="index"></param>
     public void CoruseInfo(int index)
@@ -474,7 +474,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// Ä³¸¯ÅÍ º¯°æ ½Ã ³» Ä³¸¯ÅÍ º¯°æ
+    /// ìºë¦­í„° ë³€ê²½ ì‹œ ë‚´ ìºë¦­í„° ë³€ê²½
     /// </summary>
     /// <param name="index"></param>
     public void CharacterChoice(int index)
@@ -484,7 +484,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// ´ë±â¹æ¿¡¼­ ³ª°¥ ½Ã
+    /// ëŒ€ê¸°ë°©ì—ì„œ ë‚˜ê°ˆ ì‹œ
     /// </summary>
     public void OnBackRoom()
     {
@@ -496,13 +496,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             multiPlayerListObject.SetActive(false);
             pv.RPC("LeftPlayerInfo", RpcTarget.MasterClient, JsonConvert.SerializeObject(me));
-            PhotonNetwork.LeaveRoom(); // ·ë(´ë±â¹æ) Á¢¼Ó Á¾·á
+            PhotonNetwork.LeaveRoom(); // ë£¸(ëŒ€ê¸°ë°©) ì ‘ì† ì¢…ë£Œ
         }        
     }
     
 
     /// <summary>
-    /// ´ë±â¹æ¿¡ µé¾î°¥ ¶§ ÇØ¾ßÇÒ Çàµ¿
+    /// ëŒ€ê¸°ë°©ì— ë“¤ì–´ê°ˆ ë•Œ í•´ì•¼í•  í–‰ë™
     /// </summary>
     public void EnterRoom()
     {
@@ -510,7 +510,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         closeButton.SetActive(false);
         if (isSolo)
         {
-            InRoomName.text = "È¥ÀÚÇÏ±â";
+            InRoomName.text = "í˜¼ìí•˜ê¸°";
             soloRecordList.SetActive(true);
             courseChoiceButton.interactable = true;
             gameStartButton.interactable = true;
@@ -525,13 +525,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     /// <summary>
-    /// È¥ÀÚÇÏ±â ½Ã ¸Ê¿¡ µû¸¥ ±â·Ï ºÒ·¯¿À°í Ç¥½ÃÇÏ±â
+    /// í˜¼ìí•˜ê¸° ì‹œ ë§µì— ë”°ë¥¸ ê¸°ë¡ ë¶ˆëŸ¬ì˜¤ê³  í‘œì‹œí•˜ê¸°
     /// </summary>
     /// <param name="keyIndex"></param>
     public void RecordUpdate(int keyIndex)
     {
-        // ±â·Ï ¹× ±â·ÏÃ¢ ºÒ·¯¿À±â
-        // ´ë±â¹æ¿¡¼­ ¸Ê ¹Ù²Ü¶§ ¶ÇÇÑ ºÒ·¯¿Í¾ß ÇÔ
+        // ê¸°ë¡ ë° ê¸°ë¡ì°½ ë¶ˆëŸ¬ì˜¤ê¸°
+        // ëŒ€ê¸°ë°©ì—ì„œ ë§µ ë°”ê¿€ë•Œ ë˜í•œ ë¶ˆëŸ¬ì™€ì•¼ í•¨
         records = JsonConvert.DeserializeObject<Record[]>(PlayerPrefs.GetString(COURSE_KEY[keyIndex]));
         if (records == null)
         {
@@ -557,11 +557,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
     /// <summary>
-    /// °ÔÀÓ Á¾·á ½Ã
+    /// ê²Œì„ ì¢…ë£Œ ì‹œ
     /// </summary>
     public void CloseGame()
     {
-        PhotonNetwork.Disconnect(); // ¼­¹ö Á¢¼Ó Á¾·á
+        PhotonNetwork.Disconnect(); // ì„œë²„ ì ‘ì† ì¢…ë£Œ
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -571,21 +571,21 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    // ¿Ï¼º ÈÄ »èÁ¦
-    // Å×½ºÆ®¿ë ÇÔ¼ö
+    // ì™„ì„± í›„ ì‚­ì œ
+    // í…ŒìŠ¤íŠ¸ìš© í•¨ìˆ˜
     public void PlayerCheck()
     {
         Debug.Log(playerList[0].name);
         Debug.Log(playerList[0].course);
         Debug.Log(me.course);
-        //Debug.Log(PhotonNetwork.PlayerList.Count() + "¸í");
+        //Debug.Log(PhotonNetwork.PlayerList.Count() + "ëª…");
         //Debug.Log(PhotonNetwork.IsMasterClient);
         //Debug.Log(me.name);
         //Debug.Log(instance);
-        //Debug.Log(PhotonNetwork.CountOfRooms + "°³ ¹æ¼ö");
+        //Debug.Log(PhotonNetwork.CountOfRooms + "ê°œ ë°©ìˆ˜");
         //Debug.Log(me.characterIndex);
         //Debug.Log(me.course);
-        //Debug.Log(pv.Controller.NickName); -> ÇÃ·¹ÀÌÁß¿¡¸¸ È®ÀÎ °¡´É
+        //Debug.Log(pv.Controller.NickName); -> í”Œë ˆì´ì¤‘ì—ë§Œ í™•ì¸ ê°€ëŠ¥
         for (int i = 0; i < playerList.Length; i++)
         {
             Debug.Log(playerList[i].name);

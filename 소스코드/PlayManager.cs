@@ -9,21 +9,21 @@ using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
-    #region º¯¼ö ¼±¾ğ
+    #region ë³€ìˆ˜ ì„ ì–¸
     [SerializeField] PhotonView pv;
     GameManager gm;
     public bool isSolo { get; private set; }
 
-    [Header ("°á°úÈ­¸é")]
+    [Header ("ê²°ê³¼í™”ë©´")]
     [SerializeField] GameObject resultImage;
 
-    [Header("³»Á¤º¸")]
+    [Header("ë‚´ì •ë³´")]
     [SerializeField] TextMeshProUGUI myRapTimeText;
     [SerializeField] TextMeshProUGUI myInfoNameText;
     [SerializeField] Image myInfoCharacterImage;
     [HideInInspector]public GameObject my;
 
-    [Header("½Ã°£ Ã¼Å© °ü·Ã")]
+    [Header("ì‹œê°„ ì²´í¬ ê´€ë ¨")]
     [SerializeField] TextMeshProUGUI countDownText;
     [SerializeField] TextMeshProUGUI rapTimeText;
     [SerializeField] TextMeshProUGUI multiExitText;
@@ -39,7 +39,7 @@ public class PlayManager : MonoBehaviour
             CountDown = value;
 
             countDownText.text = (((int)value % 60) + 1).ToString();
-            // Á¤¼ö¸¸ Ç¥±â
+            // ì •ìˆ˜ë§Œ í‘œê¸°
         }
     }
     float T;
@@ -53,7 +53,7 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    [Header("ÇÁ¸®ÆÕ »ı¼º°ü·Ã")]
+    [Header("í”„ë¦¬íŒ¹ ìƒì„±ê´€ë ¨")]
     [SerializeField] string[] myCharacter;
     [SerializeField] GameObject[] myCharacterObject;
     [SerializeField] GameObject[] courseOrigin;
@@ -62,7 +62,7 @@ public class PlayManager : MonoBehaviour
     int courseIndex;
     int characterIndex;
 
-    [Header("±â·Ï Ã¼Å©")]
+    [Header("ê¸°ë¡ ì²´í¬")]
     [SerializeField] SoloRecordObject[] soloRecordObject;
     [SerializeField] SoloRecordObject[] multiRankObject;
     [SerializeField] Sprite[] medalImage;
@@ -85,11 +85,11 @@ public class PlayManager : MonoBehaviour
             TimeSpan timeSpan = TimeSpan.FromSeconds(value);
             rapTimeText.text = string.Format("{0:00}:{1:00}.{2:##}", (int)timeSpan.TotalMinutes, timeSpan.TotalSeconds % 60, timeSpan.Milliseconds / 10);
             //rapTimeText.text = ((int)(value / 60)).ToString() + " : " + ((int)(value % 60)).ToString();
-            // 00:00 Çü½ÄÀ¸·Î Ç¥±â
+            // 00:00 í˜•ì‹ìœ¼ë¡œ í‘œê¸°
         }
     }
 
-    [Header("°æ±â")]
+    [Header("ê²½ê¸°")]
     [SerializeField] GameObject exitButton;
     [SerializeField] GameObject rankUpdatingImage;
     [SerializeField] TextMeshProUGUI rankUpdatingText;
@@ -98,7 +98,7 @@ public class PlayManager : MonoBehaviour
 
     #endregion
 
-    #region ÀÌº¥Æ® ÇÔ¼ö
+    #region ì´ë²¤íŠ¸ í•¨ìˆ˜
     private void Awake()
     {
         gm = GameManager.instance;
@@ -137,10 +137,10 @@ public class PlayManager : MonoBehaviour
     }
     #endregion
 
-    #region ÇÔ¼ö
+    #region í•¨ìˆ˜
 
     /// <summary>
-    /// °ÔÀÓ ½ÃÀÛ ½Ã
+    /// ê²Œì„ ì‹œì‘ ì‹œ
     /// </summary>
     void StartGame()
     {
@@ -148,7 +148,7 @@ public class PlayManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¿ÏÁÖ½Ã
+    /// ì™„ì£¼ì‹œ
     /// </summary>
     /// <returns></returns>
     public IEnumerator GoalGame()
@@ -181,7 +181,7 @@ public class PlayManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¹æÀåÀÌ ÇÃ·¹ÀÌ¾î ¼øÀ§¿¡ ¸Â°Ô ¹è¿­¿¡ Ãß°¡
+    /// ë°©ì¥ì´ í”Œë ˆì´ì–´ ìˆœìœ„ì— ë§ê²Œ ë°°ì—´ì— ì¶”ê°€
     /// </summary>
     /// <param name="goalInfo"></param>
     [PunRPC]
@@ -198,7 +198,7 @@ public class PlayManager : MonoBehaviour
         pv.RPC("RankUpdate", RpcTarget.Others, JsonConvert.SerializeObject(rankInfo));
     }
     /// <summary>
-    /// ¹æÀåÀÌ ¾÷µ¥ÀÌÆ® ÇÑ ¹è¿­ Àü¼Û
+    /// ë°©ì¥ì´ ì—…ë°ì´íŠ¸ í•œ ë°°ì—´ ì „ì†¡
     /// </summary>
     /// <param name="rank"></param>
     [PunRPC]
@@ -207,7 +207,7 @@ public class PlayManager : MonoBehaviour
         rankInfo = JsonConvert.DeserializeObject<Record[]>(rank);
     }
     /// <summary>
-    /// ¸ÖÆ¼¿¡¼­ ¼øÀ§ ÆÇ´Ü
+    /// ë©€í‹°ì—ì„œ ìˆœìœ„ íŒë‹¨
     /// </summary>
     void ShowMultiRank()
     {
@@ -216,7 +216,7 @@ public class PlayManager : MonoBehaviour
             multiRankObject[i].name.text = rankInfo[i].name;
 
             if (rankInfo[i].rapTime == 0)
-                multiRankObject[i].rapTime.text = "¸®Å¸ÀÌ¾î";
+                multiRankObject[i].rapTime.text = "ë¦¬íƒ€ì´ì–´";
             else
             {
                 TimeSpan timeSpan = TimeSpan.FromSeconds(rankInfo[i].rapTime);
@@ -232,7 +232,7 @@ public class PlayManager : MonoBehaviour
         multiRank.SetActive(true);
     }
     /// <summary>
-    /// ¼Ö·Î¿¡¼­ ¼øÀ§ ÆÇ´Ü ¹× ÀúÀå
+    /// ì†”ë¡œì—ì„œ ìˆœìœ„ íŒë‹¨ ë° ì €ì¥
     /// </summary>
     void ShowSoloRank()
     {
@@ -241,7 +241,7 @@ public class PlayManager : MonoBehaviour
             if (gm.records[i] == null)
             {
                 breakRecord.SetActive(true);
-                ranking.text = (i + 1) + "µî";
+                ranking.text = (i + 1) + "ë“±";
                 gm.records[i] = record;
 
                 if (i < 3)
@@ -255,11 +255,11 @@ public class PlayManager : MonoBehaviour
                     break;
                 }
             }
-            // ±â·ÏÀÌ Ä¿¾ß ³ªº¸´Ù ´À¸°°Í
+            // ê¸°ë¡ì´ ì»¤ì•¼ ë‚˜ë³´ë‹¤ ëŠë¦°ê²ƒ
             if (gm.records[i].rapTime > record.rapTime)
             {
                 breakRecord.SetActive(true);
-                ranking.text = (i + 1) + "µî";
+                ranking.text = (i + 1) + "ë“±";
                 for (int j = 4; j >= i; j--)
                 {
                     if (j == 0)
@@ -279,7 +279,7 @@ public class PlayManager : MonoBehaviour
                     break;
                 }
             }
-            // 4¹ø ÀÎµ¦½º(5À§)±îÁö Á¡°ËÇØºÃ´Âµ¥ breakÇÏÁö ¸øÇß´Ù¸é ¼øÀ§±Ç ¹ÛÀÌ´Ù
+            // 4ë²ˆ ì¸ë±ìŠ¤(5ìœ„)ê¹Œì§€ ì ê²€í•´ë´¤ëŠ”ë° breakí•˜ì§€ ëª»í–ˆë‹¤ë©´ ìˆœìœ„ê¶Œ ë°–ì´ë‹¤
             if (i == 4)
                 outOfRecord.SetActive(true);
         }
@@ -306,15 +306,15 @@ public class PlayManager : MonoBehaviour
     }
     
     /// <summary>
-    /// ¼Ö·Î/¸ÖÆ¼ ½ÃÀÛ ¹× ¼Ö·Î ¿ÏÁÖ ½Ã
-    /// Ä«¿îÆ®´Ù¿î
+    /// ì†”ë¡œ/ë©€í‹° ì‹œì‘ ë° ì†”ë¡œ ì™„ì£¼ ì‹œ
+    /// ì¹´ìš´íŠ¸ë‹¤ìš´
     /// </summary>
     /// <param name="isGoal"></param>
     /// <returns></returns>
     IEnumerator CountDownTextEffect(bool isGoal)
     {
         countDownText.gameObject.SetActive(true);
-        // ½ÃÀÛ ÇÒ ¶§ÀÇ Ä«¿îÆ®´Ù¿î
+        // ì‹œì‘ í•  ë•Œì˜ ì¹´ìš´íŠ¸ë‹¤ìš´
         if (!isGoal)
         {
             startCountDownAudioSource.Play();
@@ -326,10 +326,10 @@ public class PlayManager : MonoBehaviour
             }
             isPlaying = true;
         }
-        // ¿ÏÁÖ ÈÄÀÇ Ä«¿îÆ®´Ù¿î
+        // ì™„ì£¼ í›„ì˜ ì¹´ìš´íŠ¸ë‹¤ìš´
         else
         {
-            countDown = 3; // È¥ÀÚÇÏ±â ½Ã¿¡ ¿ÏÁÖ ÈÄ 3ÃÊ ´ë±â
+            countDown = 3; // í˜¼ìí•˜ê¸° ì‹œì— ì™„ì£¼ í›„ 3ì´ˆ ëŒ€ê¸°
             goalCountDownAudioSource.Play();
             while (countDown >= 0)
             {
@@ -345,8 +345,8 @@ public class PlayManager : MonoBehaviour
     }
     
     /// <summary>
-    /// ¸ÖÆ¼ ¿ÏÁÖ ½Ã 10ÃÊ Á¦ÇÑ½Ã°£ ±â´Ù¸®±â
-    /// 1µîÀÌ ¿ÏÁÖ ½Ã º¸³»¾ß ÇÒ Á¤º¸
+    /// ë©€í‹° ì™„ì£¼ ì‹œ 10ì´ˆ ì œí•œì‹œê°„ ê¸°ë‹¤ë¦¬ê¸°
+    /// 1ë“±ì´ ì™„ì£¼ ì‹œ ë³´ë‚´ì•¼ í•  ì •ë³´
     /// </summary>
     /// <returns></returns>
     IEnumerator MultiGoalCountDown()
@@ -354,7 +354,7 @@ public class PlayManager : MonoBehaviour
         onFirst = true;
         countDownText.gameObject.SetActive(true);
         goalCountDownAudioSource.Play();
-        // 10ÃÊ ´ë±â½Ã°£À» ¼¼¾ß ÇÔ
+        // 10ì´ˆ ëŒ€ê¸°ì‹œê°„ì„ ì„¸ì•¼ í•¨
         countDown = 10;
         while (countDown >= 0)
         {
@@ -376,8 +376,8 @@ public class PlayManager : MonoBehaviour
         countDownText.gameObject.SetActive(false);
     }
     /// <summary>
-    /// ¸ÖÆ¼ °ÔÀÓÁ¾·á ½Ã
-    /// ¸ğµç ÇÃ·¹ÀÌ¾î ±â·Ï Áı°è ´ë±â
+    /// ë©€í‹° ê²Œì„ì¢…ë£Œ ì‹œ
+    /// ëª¨ë“  í”Œë ˆì´ì–´ ê¸°ë¡ ì§‘ê³„ ëŒ€ê¸°
     /// </summary>
     /// <returns></returns>
     IEnumerator MultiRankUpdating()
@@ -386,7 +386,7 @@ public class PlayManager : MonoBehaviour
         rankUpdatingImage.SetActive(true);
         while (a <= 10)
         {
-            rankUpdatingText.text = "±â·Ï Áı°èÁß" + PointDot((a++ % 3) + 1);
+            rankUpdatingText.text = "ê¸°ë¡ ì§‘ê³„ì¤‘" + PointDot((a++ % 3) + 1);
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -404,7 +404,7 @@ public class PlayManager : MonoBehaviour
     }
    
     /// <summary>
-    /// ¸ÖÆ¼ °á°úÈ­¸é 10ÃÊ º¸¿©ÁÖ±â
+    /// ë©€í‹° ê²°ê³¼í™”ë©´ 10ì´ˆ ë³´ì—¬ì£¼ê¸°
     /// </summary>
     IEnumerator MultiResultCountDown()
     {
@@ -418,7 +418,7 @@ public class PlayManager : MonoBehaviour
     }
 
     /// <summary>
-    /// È¥ÀÚÇÏ±â ¿ÏÁÖ ½Ã '³ª°¡±â'¹öÆ° ´­·¶À» ¶§
+    /// í˜¼ìí•˜ê¸° ì™„ì£¼ ì‹œ 'ë‚˜ê°€ê¸°'ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
     /// </summary>
     public void ExitButton()
     {

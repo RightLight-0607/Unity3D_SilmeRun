@@ -16,7 +16,7 @@ public class Story : MonoBehaviour
 
     private void Update()
     {
-        // a°ªÀÌ 0ÀÌµÇ¸é »ó½Â, 1ÀÌµÇ¸é ÇÏ¶ô
+        // aê°’ì´ 0ì´ë˜ë©´ ìƒìŠ¹, 1ì´ë˜ë©´ í•˜ë½
 
         pushSpace.color += isUpAlpha ? alpha * 0.05f : alpha * -0.05f;
         

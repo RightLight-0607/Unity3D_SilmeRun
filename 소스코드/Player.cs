@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    #region º¯¼ö ¼±¾ğ
+    #region ë³€ìˆ˜ ì„ ì–¸
     public PhotonView pv { get; private set; }
     PlayManager playManager;
     BoxCollider boxCol;
     Camera cam;
 
-    [Header("ÀÌµ¿")]
+    [Header("ì´ë™")]
     [SerializeField] float mov = 0;
     Vector3 dir = Vector3.zero;
     public Rigidbody rb;
@@ -20,13 +20,13 @@ public class Player : MonoBehaviour
     public float curve;
     float jumpingMove;
 
-    [Header("¾Ö´Ï¸ŞÀÌ¼Ç")]
+    [Header("ì• ë‹ˆë©”ì´ì…˜")]
     [SerializeField] Animator ani;
     [SerializeField] bool aniSwitch = false;
     bool aniTrigger = false;
     bool isLanding;
 
-    [Header("ÀÌº¥Æ®/È¿°ú")]
+    [Header("ì´ë²¤íŠ¸/íš¨ê³¼")]
     [SerializeField] GameObject stunEffect;
     [SerializeField] LayerMask lm;
     [SerializeField] float fovSpeed = 0.01f;
@@ -34,11 +34,11 @@ public class Player : MonoBehaviour
     float targetFov;
     bool isStun = false;
 
-    [Header("ÀÌº¥Æ®/È¿°ú")]
+    [Header("ì´ë²¤íŠ¸/íš¨ê³¼")]
     AudioSource audioSource;
     #endregion
 
-    #region ÀÌº¥Æ® ÇÔ¼ö
+    #region ì´ë²¤íŠ¸ í•¨ìˆ˜
     private void Awake()
     {
         cam = Camera.main;
@@ -104,7 +104,7 @@ public class Player : MonoBehaviour
             isLanding = true;
             preObject = collision.transform;
         }
-        // µ¥µåÁ¸ or º®°ú Ãæµ¹ÇßÀ» ¶§ ½ºÅÏÁÖ±â
+        // ë°ë“œì¡´ or ë²½ê³¼ ì¶©ëŒí–ˆì„ ë•Œ ìŠ¤í„´ì£¼ê¸°
         else if (collision.gameObject.CompareTag("Wall"))
         {
             if (isStun)
@@ -128,25 +128,25 @@ public class Player : MonoBehaviour
             if (playManager.isPlaying)
                 StartCoroutine(playManager.GoalGame());
 
-            Debug.Log("°ñ");
+            Debug.Log("ê³¨");
         }
     }
     #endregion
 
-    #region ÇÔ¼ö
+    #region í•¨ìˆ˜
     /// <summary>
-    /// ÂøÁö ¾Ö´Ï¸ŞÀÌ¼Ç
+    /// ì°©ì§€ ì• ë‹ˆë©”ì´ì…˜
     /// </summary>
     /// <returns></returns>
     IEnumerator LandingAni()
     
     {
-        aniSwitch = false;  // ÄÚ·çÆ¾ ¿¬¼Ó ½ÇÇàÀ» ¸·±âÀ§ÇÑ false
+        aniSwitch = false;  // ì½”ë£¨í‹´ ì—°ì† ì‹¤í–‰ì„ ë§‰ê¸°ìœ„í•œ false
         yield return null;
         ani.SetBool("isLand", !ani.GetBool("isLand"));
     }
     /// <summary>
-    /// ÀÌµ¿ ÀÔ·Â¹Ş±â
+    /// ì´ë™ ì…ë ¥ë°›ê¸°
     /// </summary>
     void Move()
     {
@@ -154,12 +154,12 @@ public class Player : MonoBehaviour
 
         transform.position += transform.forward * mov * Time.deltaTime * speed;
         dir.y = Input.GetAxis("Horizontal") * Time.deltaTime * curve;
-        jumpingMove = dir.y;    // Á¡ÇÁÁß¿¡´Â ¾à°£ÀÇ xÃà ÀÌµ¿À» À§ÇØ µû·Î ÀúÀå
+        jumpingMove = dir.y;    // ì í”„ì¤‘ì—ëŠ” ì•½ê°„ì˜ xì¶• ì´ë™ì„ ìœ„í•´ ë”°ë¡œ ì €ì¥
         transform.eulerAngles += dir;
         transform.position += transform.right * jumpingMove * Time.deltaTime * 5f;
     }
    /// <summary>
-   /// ÀÚµ¿ Á¡ÇÁ / °­Á¡ÇÁ
+   /// ìë™ ì í”„ / ê°•ì í”„
    /// </summary>
     void Jump()
     {
@@ -186,8 +186,8 @@ public class Player : MonoBehaviour
         }
     }
    /// <summary>
-   /// ¼Óµµ º¯È­¿¡ µû¸¥
-   /// FOV º¯È­
+   /// ì†ë„ ë³€í™”ì— ë”°ë¥¸
+   /// FOV ë³€í™”
    /// </summary>
    /// <returns></returns>
     IEnumerator FovEffect()
@@ -200,12 +200,12 @@ public class Player : MonoBehaviour
             targetFov = cam.fieldOfView;
             if(mov > 0 && (currentMov - preMov > 0 || currentMov == 1))
             {
-                // Á¡Á¡ »¡¶óÁö°í ÀÖ´Ù´Â ¾ê±â
+                // ì ì  ë¹¨ë¼ì§€ê³  ìˆë‹¤ëŠ” ì–˜ê¸°
                 targetFov += fovSpeed;
             }
             else if(currentMov - preMov < 0 || currentMov == 0)
             {
-                // Á¡Á¡ ´À·ÁÁö°í ÀÖ´Ù´Â ¾ê±â
+                // ì ì  ëŠë ¤ì§€ê³  ìˆë‹¤ëŠ” ì–˜ê¸°
                 targetFov -= fovSpeed * 1.5f;
             }
             cam.fieldOfView = Mathf.Clamp(targetFov, 60, 80);
@@ -213,39 +213,39 @@ public class Player : MonoBehaviour
             yield return null;
         }
 
-        //// µÚ·Î°¥¶§µµ fov°¡ ¿òÁ÷ÀÎ´Ù.
-        //// µÚ·Î°¥¶§´Â fov¸¦ ÁÙÀÌ±â¸¸ ÇØÁÙ ¼ö ÀÖ¾î¾ß ÇÔ
+        //// ë’¤ë¡œê°ˆë•Œë„ fovê°€ ì›€ì§ì¸ë‹¤.
+        //// ë’¤ë¡œê°ˆë•ŒëŠ” fovë¥¼ ì¤„ì´ê¸°ë§Œ í•´ì¤„ ìˆ˜ ìˆì–´ì•¼ í•¨
         //float distance;
         //Vector3 currentVelocity;
         //while (true)
         //{
-        //    //¸®Áöµå ¹Ùµğ ¿¡¼­ ÇöÀç ¼Óµµ ¾Ë¾Æ³»±â
+        //    //ë¦¬ì§€ë“œ ë°”ë”” ì—ì„œ í˜„ì¬ ì†ë„ ì•Œì•„ë‚´ê¸°
         //    currentVelocity = rb.velocity;
-        //    //¼Óµµ¿¡¼­ y°ªÀº Á¦¿Ü
-        //    //Á¡ÇÁ·Î ÀÎÇØ ¾ÕÀ¸·Î °£ °Å¸®°¡ ´Ã¾î³ª´Â°ÍÀÌ ¾Æ´Ï´Ù!
+        //    //ì†ë„ì—ì„œ yê°’ì€ ì œì™¸
+        //    //ì í”„ë¡œ ì¸í•´ ì•ìœ¼ë¡œ ê°„ ê±°ë¦¬ê°€ ëŠ˜ì–´ë‚˜ëŠ”ê²ƒì´ ì•„ë‹ˆë‹¤!
         //    currentVelocity.y = 0;
-        //    //¼Óµµ¸¦ ¼Ó·ÂÀ¸·Î º¯È¯
+        //    //ì†ë„ë¥¼ ì†ë ¥ìœ¼ë¡œ ë³€í™˜
         //    Debug.Log(currentVelocity);
         //    if (currentVelocity.z > 0)
         //    {
-        //        // currentVelocity.z°¡ ¾ç¼öÀÏ¶§¸¸(¾ÕÀ¸·Î ÀüÁø) À§Ä¡¿¡ µû¸¥ fovº¯È¯À» ÇØÁÖ°í
-        //        // À½¼öÀÏ¶§´Â 60±îÁö ÁÙ¾îµé±â¸¸ ÇÏ°Ô²û
+        //        // currentVelocity.zê°€ ì–‘ìˆ˜ì¼ë•Œë§Œ(ì•ìœ¼ë¡œ ì „ì§„) ìœ„ì¹˜ì— ë”°ë¥¸ fovë³€í™˜ì„ í•´ì£¼ê³ 
+        //        // ìŒìˆ˜ì¼ë•ŒëŠ” 60ê¹Œì§€ ì¤„ì–´ë“¤ê¸°ë§Œ í•˜ê²Œë”
         //        distance = currentVelocity.magnitude;
 
-        //        //¼Ó·ÂÀÌ 0ÀÌ¸é 60
-        //        //ÃÖ°í ¼Ó·ÂÀÌ¸é 80
-        //        //À¸·Î ¸ñÇ¥ fov ¼³Á¤
+        //        //ì†ë ¥ì´ 0ì´ë©´ 60
+        //        //ìµœê³  ì†ë ¥ì´ë©´ 80
+        //        //ìœ¼ë¡œ ëª©í‘œ fov ì„¤ì •
         //        targetFov = Mathf.Lerp(60, 80, distance / maxDistance);
 
-        //        //Ä«¸Ş¶ó¿¡ Àû¿ëÁßÀÎ fov °¡Á®¿À±â
+        //        //ì¹´ë©”ë¼ì— ì ìš©ì¤‘ì¸ fov ê°€ì ¸ì˜¤ê¸°
         //        currentFov = cam.fieldOfView;
 
-        //        //ÇöÀç Àû¿ëÁßÀÎ fov °ª º¸´Ù Å¸°ÙÀÇ fov°¡ ´õ Å¬¶§
-        //        //Àû¿ë½ÃÅ³ fov¿¡ fovÁõ°¡·® ¸¸Å­ Áõ°¡ È¤Àº °¨¼Ò
+        //        //í˜„ì¬ ì ìš©ì¤‘ì¸ fov ê°’ ë³´ë‹¤ íƒ€ê²Ÿì˜ fovê°€ ë” í´ë•Œ
+        //        //ì ìš©ì‹œí‚¬ fovì— fovì¦ê°€ëŸ‰ ë§Œí¼ ì¦ê°€ í˜¹ì€ ê°ì†Œ
         //        currentFov += currentFov < targetFov ? fovSpeed : -fovSpeed;
 
-        //        //Àû¿ë½ÃÅ³ fov°¡ 60º¸´Ù °°°Å³ª Å©°í 80º¸´Ù °°°Å³ª ÀÛÀº °ªÀ¸·Î ¼³Á¤
-        //        //ÀÌÀ¯ 59.99, 80.111 ÀÌ·± °ª ÇÒ ¼ö ¾ø°Ô²û
+        //        //ì ìš©ì‹œí‚¬ fovê°€ 60ë³´ë‹¤ ê°™ê±°ë‚˜ í¬ê³  80ë³´ë‹¤ ê°™ê±°ë‚˜ ì‘ì€ ê°’ìœ¼ë¡œ ì„¤ì •
+        //        //ì´ìœ  59.99, 80.111 ì´ëŸ° ê°’ í•  ìˆ˜ ì—†ê²Œë”
         //        cam.fieldOfView = Mathf.Clamp(currentFov, 60, 80);
         //    }
 
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
     }
 
    /// <summary>
-   /// ½ºÅÏ È¿°ú
+   /// ìŠ¤í„´ íš¨ê³¼
    /// </summary>
    /// <param name="wall"></param>
    /// <returns></returns>

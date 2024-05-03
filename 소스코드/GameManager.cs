@@ -570,37 +570,5 @@ public class GameManager : MonoBehaviourPunCallbacks
 #endif
     }
     #endregion
-
-    // 완성 후 삭제
-    // 테스트용 함수
-    public void PlayerCheck()
-    {
-        Debug.Log(playerList[0].name);
-        Debug.Log(playerList[0].course);
-        Debug.Log(me.course);
-        //Debug.Log(PhotonNetwork.PlayerList.Count() + "명");
-        //Debug.Log(PhotonNetwork.IsMasterClient);
-        //Debug.Log(me.name);
-        //Debug.Log(instance);
-        //Debug.Log(PhotonNetwork.CountOfRooms + "개 방수");
-        //Debug.Log(me.characterIndex);
-        //Debug.Log(me.course);
-        //Debug.Log(pv.Controller.NickName); -> 플레이중에만 확인 가능
-        for (int i = 0; i < playerList.Length; i++)
-        {
-            Debug.Log(playerList[i].name);
-        }
-        PlayerPrefs.DeleteAll();
-        GetPlayersInServer();
-    }
-    void GetPlayersInServer()
-    {
-        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-        {
-            string nickname = player.NickName;
-            Debug.Log("Player nickname: " + nickname);
-        }
-    }
 }
-
 
